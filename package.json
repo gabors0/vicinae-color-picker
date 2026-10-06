@@ -1,0 +1,66 @@
+{
+  "$schema": "https://raw.githubusercontent.com/vicinaehq/vicinae/refs/heads/main/extra/schemas/extension.json",
+  "name": "kde-color-picker",
+  "title": "KDE Color Picker",
+  "description": "Pick colors from the screen using KWin's color picker",
+  "categories": [
+    "Productivity",
+    "Developer Tools"
+  ],
+  "license": "MIT",
+  "platforms": [
+    "Linux"
+  ],
+  "author": "gabors0",
+  "icon": "extension_icon.svg",
+  "version": "1.0.0",
+  "commands": [
+    {
+      "name": "pick-color",
+      "title": "Pick Color",
+      "description": "Pick a color from the screen and copy it to the clipboard",
+      "mode": "no-view"
+    },
+    {
+      "name": "color-history",
+      "title": "Color History",
+      "description": "Browse previously picked colors",
+      "mode": "view"
+    }
+  ],
+  "preferences": [
+    {
+      "name": "format",
+      "title": "Copy Format",
+      "description": "Format copied to the clipboard after picking",
+      "type": "dropdown",
+      "required": false,
+      "default": "hex",
+      "data": [
+        {
+          "title": "HEX (#A5A5A5)",
+          "value": "hex"
+        },
+        {
+          "title": "RGB (rgb(165, 165, 165))",
+          "value": "rgb"
+        },
+        {
+          "title": "HSL (hsl(0, 0%, 65%))",
+          "value": "hsl"
+        }
+      ]
+    }
+  ],
+  "scripts": {
+    "build": "vici build",
+    "dev": "vici develop",
+    "lint": "vici lint"
+  },
+  "dependencies": {
+    "@vicinae/api": "0.29.1"
+  },
+  "devDependencies": {
+    "typescript": "^5.9.3"
+  }
+}

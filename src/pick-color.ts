@@ -1,4 +1,5 @@
-import { Clipboard, closeMainWindow, getPreferenceValues, showHUD } from "@vicinae/api";
+import { closeMainWindow, getPreferenceValues, showHUD } from "@vicinae/api";
+import { copyText } from "./clipboard";
 import { addToHistory, formatColor, Format, pickColor, PickError } from "./color";
 
 export default async function PickColor() {
@@ -20,7 +21,12 @@ export default async function PickColor() {
 
   const { format } = getPreferenceValues<{ format: Format }>();
   const value = formatColor(hex, format);
-  await Clipboard.copy(value);
   await addToHistory(hex);
+  try {
+    await copyText(value);
+  } catch (error) {
+    await showHUD(`Picked ${value}, but copying failed: ${error instanceof Error ? error.message : error}`);
+    return;
+  }
   await showHUD(`Copied ${value}`);
 }

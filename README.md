@@ -11,6 +11,7 @@ A [Vicinae](https://vicinae.com) extension that picks colors from anywhere on sc
 
 - KDE Plasma (Wayland or X11) — the picker is KWin's `org.kde.kwin.ColorPicker` D-Bus interface
 - `busctl` (ships with systemd)
+- `wl-copy` from [wl-clipboard](https://github.com/bugaevc/wl-clipboard) on Wayland — used instead of Vicinae's clipboard API, whose Wayland helper deadlocks after copying (as of Vicinae 0.29.1), leaving the clipboard empty and stalling Klipper
 
 ## Install
 

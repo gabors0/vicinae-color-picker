@@ -1,6 +1,22 @@
 import { useEffect, useState } from "react";
-import { Action, ActionPanel, Icon, List, showToast, Toast } from "@vicinae/api";
+import { Action, ActionPanel, closeMainWindow, Icon, List, showToast, Toast } from "@vicinae/api";
+import { copyText } from "./clipboard";
 import { addToHistory, formatColor, getHistory, pickColor, PickedColor, PickError, saveHistory } from "./color";
+
+// Stand-in for Action.CopyToClipboard, which goes through Vicinae's clipboard — see copyText
+function CopyAction({ title, content }: { title: string; content: string }) {
+  const copy = async () => {
+    try {
+      await copyText(content);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : String(error);
+      await showToast({ style: Toast.Style.Failure, title: "Copy failed", message });
+      return;
+    }
+    await closeMainWindow();
+  };
+  return <Action title={title} icon={Icon.CopyClipboard} onAction={copy} />;
+}
 
 export default function ColorHistory() {
   const [history, setHistory] = useState<PickedColor[]>();
@@ -46,9 +62,9 @@ export default function ColorHistory() {
           accessories={[{ text: new Date(color.pickedAt) }]}
           actions={
             <ActionPanel>
-              <Action.CopyToClipboard title="Copy HEX" content={color.hex} />
-              <Action.CopyToClipboard title="Copy RGB" content={formatColor(color.hex, "rgb")} />
-              <Action.CopyToClipboard title="Copy HSL" content={formatColor(color.hex, "hsl")} />
+              <CopyAction title="Copy HEX" content={color.hex} />
+              <CopyAction title="Copy RGB" content={formatColor(color.hex, "rgb")} />
+              <CopyAction title="Copy HSL" content={formatColor(color.hex, "hsl")} />
               {pickAction}
               <Action
                 title="Remove"
